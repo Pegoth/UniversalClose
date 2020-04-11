@@ -4,6 +4,9 @@
         <Platforms>x64</Platforms>
         <GameDirectory><![CDATA[D:\Steam\SteamApps\common\Mount & Blade II Bannerlord\]]></GameDirectory>
         <CopyToGameModules>Yes</CopyToGameModules>
+        <AssemblyVersion>1.0.1</AssemblyVersion>
+        <FileVersion>1.0.1</FileVersion>
+        <Version>1.0.1</Version>
     </PropertyGroup>
     <ItemGroup>
       <PackageReference Include="Lib.Harmony" Version="2.0.0.9" />

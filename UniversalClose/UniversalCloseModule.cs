@@ -53,6 +53,7 @@ namespace UniversalClose
 
             if (InventoryVM != null)
             {
+                Traverse.Create(InventoryVM).Method("ExecuteRemoveZeroCounts").GetValue();
                 Traverse.Create(InventoryVM).Method("ExecuteCompleteTranstactions").GetValue();
                 Input.ClearKeys();
                 return;
