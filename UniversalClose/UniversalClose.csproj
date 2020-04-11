@@ -3,6 +3,7 @@
         <TargetFramework>net472</TargetFramework>
         <Platforms>x64</Platforms>
         <GameDirectory><![CDATA[D:\Steam\SteamApps\common\Mount & Blade II Bannerlord\]]></GameDirectory>
+        <CopyToGameModules>Yes</CopyToGameModules>
     </PropertyGroup>
     <ItemGroup>
       <PackageReference Include="Lib.Harmony" Version="2.0.0.9" />
@@ -186,4 +187,7 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="IF /I NOT &quot;$(CopyToGameModules)&quot;==&quot;Yes&quot; EXIT&#xD;&#xA;SET &quot;targetDir=$(GameDirectory)\Modules\zzzUniversalClose&quot;&#xD;&#xA;RMDIR /Q /S &quot;%25targetDir%25\bin&quot;&#xD;&#xA;MKDIR &quot;%25targetDir%25\bin\Win64_Shipping_Client&quot;&#xD;&#xA;XCOPY &quot;$(OutDir)*.dll&quot; &quot;%25targetDir%25\bin\Win64_Shipping_Client\&quot; /Y&#xD;&#xA;COPY SubModule.xml &quot;%25targetDir%25\SubModule.xml&quot; /Y" />
+    </Target>
 </Project>
