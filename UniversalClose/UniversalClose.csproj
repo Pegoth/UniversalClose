@@ -185,7 +185,4 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="rmdir /Q /S ..\..\bin\Win64_Shipping_Client&#xD;&#xA;mkdir ..\..\bin\Win64_Shipping_Client&#xD;&#xA;xcopy $(OutDir)*.dll ..\..\bin\Win64_Shipping_Client\ /Y&#xD;&#xA;copy SubModule.xml ..\..\SubModule.xml /Y" />
-    </Target>
 </Project>
