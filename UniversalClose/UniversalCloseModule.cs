@@ -48,18 +48,21 @@ namespace UniversalClose
             {
                 Traverse.Create(PartyVM).Method("ExecuteDone").GetValue();
                 Input.ClearKeys();
+                return;
             }
 
             if (InventoryVM != null)
             {
                 Traverse.Create(InventoryVM).Method("ExecuteCompleteTranstactions").GetValue();
                 Input.ClearKeys();
+                return;
             }
 
             if (WeaponDesignVM != null && WeaponDesignVM.IsInFinalCraftingStage)
             {
                 Traverse.Create(WeaponDesignVM).Method("ExecuteFinalizeCrafting").GetValue();
                 Input.ClearKeys();
+                return;
             }
 
             if (RecruitmentVM != null)
