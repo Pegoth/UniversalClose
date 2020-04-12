@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
@@ -60,41 +61,51 @@ namespace UniversalClose
                 if (DialogHolders.PartyVM != null)
                 {
                     Traverse.Create(DialogHolders.PartyVM).Method("ExecuteDone").GetValue();
-                    Input.ClearKeys();
-                    return;
                 }
-
-                if (DialogHolders.Asd != null)
+                else if (DialogHolders.SPInventoryVM != null)
                 {
-                    Traverse.Create(DialogHolders.Asd).Method("ExecuteRemoveZeroCounts").GetValue();
-                    Traverse.Create(DialogHolders.Asd).Method("ExecuteCompleteTranstactions").GetValue();
-                    Input.ClearKeys();
-                    return;
+                    Traverse.Create(DialogHolders.SPInventoryVM).Method("ExecuteRemoveZeroCounts").GetValue();
+                    Traverse.Create(DialogHolders.SPInventoryVM).Method("ExecuteCompleteTranstactions").GetValue();
                 }
-
-                if (DialogHolders.WeaponDesignVM != null && DialogHolders.WeaponDesignVM.IsInFinalCraftingStage)
+                else if (DialogHolders.WeaponDesignVM != null && DialogHolders.WeaponDesignVM.IsInFinalCraftingStage)
                 {
                     Traverse.Create(DialogHolders.WeaponDesignVM).Method("ExecuteFinalizeCrafting").GetValue();
-                    Input.ClearKeys();
-                    return;
                 }
-
-                if (DialogHolders.RecruitmentVM != null)
+                else if (DialogHolders.RecruitmentVM != null)
                 {
                     Traverse.Create(DialogHolders.RecruitmentVM).Method("ExecuteDone").GetValue();
-                    Input.ClearKeys();
+                }
+                else if (DialogHolders.CharacterDeveloperVM != null)
+                {
+                    Traverse.Create(DialogHolders.CharacterDeveloperVM).Method("ExecuteDone").GetValue();
+                }
+                else if (DialogHolders.ClanVM != null)
+                {
+                    Traverse.Create(DialogHolders.ClanVM).Method("ExecuteClose").GetValue();
+                }
+                else if (DialogHolders.QuestsVM != null)
+                {
+                    Traverse.Create(DialogHolders.QuestsVM).Method("ExecuteClose").GetValue();
+                }
+                else if (DialogHolders.TownManagementVM != null)
+                {
+                    Traverse.Create(DialogHolders.TownManagementVM).Method("ExecuteDone").GetValue();
+                }
+                else if (DialogHolders.EncyclopediaScreenManager.IsEncyclopediaOpen)
+                {
+                    DialogHolders.EncyclopediaScreenManager.CloseEncyclopedia();
+                }
+                else
+                {
+                    // Do not clear keys if nothing relevant was open.
                     return;
                 }
 
-                if (DialogHolders.CharacterDeveloperVM != null)
-                {
-                    Traverse.Create(DialogHolders.CharacterDeveloperVM).Method("ExecuteDone").GetValue();
-                    Input.ClearKeys();
-                }
+                Input.ClearKeys();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error while running {0}: {1}", nameof(OnApplicationTick), ex);
+                Debug.WriteLine("Error while running {0}: {1}", nameof(OnApplicationTick), ex);
             }
         }
     }

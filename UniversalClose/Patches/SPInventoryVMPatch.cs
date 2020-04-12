@@ -13,7 +13,7 @@ namespace UniversalClose.Patches
     {
         public static void Postfix(SPInventoryVM __instance)
         {
-            DialogHolders.Asd = __instance;
+            DialogHolders.SPInventoryVM = __instance;
         }
     }
 }
