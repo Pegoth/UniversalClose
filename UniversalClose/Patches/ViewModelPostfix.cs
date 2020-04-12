@@ -1,31 +1,31 @@
-﻿using HarmonyLib;
-using TaleWorlds.CampaignSystem.ViewModelCollection;
-using TaleWorlds.CampaignSystem.ViewModelCollection.Craft.WeaponDesign;
-using TaleWorlds.CampaignSystem.ViewModelCollection.GameMenu;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using HarmonyLib;
 using TaleWorlds.Library;
 
 namespace UniversalClose.Patches
 {
     [HarmonyPatch(typeof(ViewModel), "OnFinalize")]
-    public class ViewModelPostfix
+    public static class ViewModelPostfix
     {
+        private static readonly Dictionary<string, PropertyInfo> PropertyInfos;
+
+        static ViewModelPostfix()
+        {
+            // Build property list from DialogHolders
+            PropertyInfos = typeof(DialogHolders).GetProperties(BindingFlags.Public | BindingFlags.Static)
+                                                 .ToDictionary(info => info.PropertyType.Name, info => info);
+        }
+
         public static void Postfix(ViewModel __instance)
         {
-            switch (__instance)
-            {
-                case SPInventoryVM _:
-                    UniversalCloseModule.InventoryVM = null;
-                    break;
-                case PartyVM _:
-                    UniversalCloseModule.PartyVM = null;
-                    break;
-                case WeaponDesignVM _:
-                    UniversalCloseModule.WeaponDesignVM = null;
-                    break;
-                case RecruitmentVM _:
-                    UniversalCloseModule.RecruitmentVM = null;
-                    break;
-            }
+            // Check if property exists in DialogHolders
+            if (!PropertyInfos.ContainsKey(__instance.GetType().Name))
+                return;
+
+            // If so clear it
+            PropertyInfos[__instance.GetType().Name].SetValue(null, null);
         }
     }
 }

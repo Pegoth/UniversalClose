@@ -8,9 +8,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.ViewModelCollection;
-using TaleWorlds.CampaignSystem.ViewModelCollection.Craft.WeaponDesign;
-using TaleWorlds.CampaignSystem.ViewModelCollection.GameMenu;
 using TaleWorlds.InputSystem;
 using TaleWorlds.MountAndBlade;
 using UniversalClose.Config;
@@ -19,11 +16,7 @@ namespace UniversalClose
 {
     public class UniversalCloseModule : MBSubModuleBase
     {
-        public static SPInventoryVM  InventoryVM    { get; set; }
-        public static PartyVM        PartyVM        { get; set; }
-        public static RecruitmentVM  RecruitmentVM  { get; set; }
-        public static WeaponDesignVM WeaponDesignVM { get; set; }
-        public static ConfigModel    Config         { get; set; }
+        public static ConfigModel Config { get; set; }
 
         protected override void OnSubModuleLoad()
         {
@@ -64,31 +57,38 @@ namespace UniversalClose
                 if (Campaign.Current == null || !Input.IsKeyPressed(Config.OkayKey))
                     return;
 
-                if (PartyVM != null)
+                if (DialogHolders.PartyVM != null)
                 {
-                    Traverse.Create(PartyVM).Method("ExecuteDone").GetValue();
+                    Traverse.Create(DialogHolders.PartyVM).Method("ExecuteDone").GetValue();
                     Input.ClearKeys();
                     return;
                 }
 
-                if (InventoryVM != null)
+                if (DialogHolders.Asd != null)
                 {
-                    Traverse.Create(InventoryVM).Method("ExecuteRemoveZeroCounts").GetValue();
-                    Traverse.Create(InventoryVM).Method("ExecuteCompleteTranstactions").GetValue();
+                    Traverse.Create(DialogHolders.Asd).Method("ExecuteRemoveZeroCounts").GetValue();
+                    Traverse.Create(DialogHolders.Asd).Method("ExecuteCompleteTranstactions").GetValue();
                     Input.ClearKeys();
                     return;
                 }
 
-                if (WeaponDesignVM != null && WeaponDesignVM.IsInFinalCraftingStage)
+                if (DialogHolders.WeaponDesignVM != null && DialogHolders.WeaponDesignVM.IsInFinalCraftingStage)
                 {
-                    Traverse.Create(WeaponDesignVM).Method("ExecuteFinalizeCrafting").GetValue();
+                    Traverse.Create(DialogHolders.WeaponDesignVM).Method("ExecuteFinalizeCrafting").GetValue();
                     Input.ClearKeys();
                     return;
                 }
 
-                if (RecruitmentVM != null)
+                if (DialogHolders.RecruitmentVM != null)
                 {
-                    Traverse.Create(RecruitmentVM).Method("ExecuteDone").GetValue();
+                    Traverse.Create(DialogHolders.RecruitmentVM).Method("ExecuteDone").GetValue();
+                    Input.ClearKeys();
+                    return;
+                }
+
+                if (DialogHolders.CharacterDeveloperVM != null)
+                {
+                    Traverse.Create(DialogHolders.CharacterDeveloperVM).Method("ExecuteDone").GetValue();
                     Input.ClearKeys();
                 }
             }
