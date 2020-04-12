@@ -9,7 +9,7 @@ namespace UniversalClose.Patches
     [HarmonyPatch(typeof(SPInventoryVM))]
     [HarmonyPatch(new[] {typeof(InventoryLogic), typeof(bool), typeof(Func<WeaponComponentData, ItemObject.ItemUsageSetFlags>), typeof(string)})]
     [HarmonyPatch(MethodType.Constructor)]
-    internal class GetInventoryVMPostfix
+    internal class SPInventoryVMPostfix
     {
         public static void Postfix(SPInventoryVM __instance)
         {

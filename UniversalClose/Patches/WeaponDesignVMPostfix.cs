@@ -10,7 +10,7 @@ namespace UniversalClose.Patches
     [HarmonyPatch(typeof(WeaponDesignVM))]
     [HarmonyPatch(new[] {typeof(Crafting), typeof(ICraftingCampaignBehavior), typeof(Action), typeof(Func<CraftingAvailableHeroItemVM>)})]
     [HarmonyPatch(MethodType.Constructor)]
-    internal class GetWeaponDesignVMPostfix
+    internal class WeaponDesignVMPostfix
     {
         public static void Postfix(WeaponDesignVM __instance)
         {

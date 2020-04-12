@@ -7,7 +7,7 @@ namespace UniversalClose.Patches
     [HarmonyPatch(typeof(RecruitmentVM))]
     [HarmonyPatch(new Type[] { })]
     [HarmonyPatch(MethodType.Constructor)]
-    internal class GetRecruitmentVMPostfix
+    internal class RecruitmentVMPostfix
     {
         public static void Postfix(RecruitmentVM __instance)
         {
