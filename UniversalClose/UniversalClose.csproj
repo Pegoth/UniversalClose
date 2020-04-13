@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="../GameTarget.targets"/>
+    <Import Project="../GameTarget.targets" />
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
         <Platforms>x64</Platforms>
-        <AssemblyVersion>1.2.0</AssemblyVersion>
-        <FileVersion>1.2.0</FileVersion>
-        <Version>1.2.0</Version>
+        <AssemblyVersion>1.2.1</AssemblyVersion>
+        <FileVersion>1.2.1</FileVersion>
+        <Version>1.2.1</Version>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Lib.Harmony" Version="2.0.0.9" />
@@ -201,11 +201,6 @@
             <HintPath>$(GameDirectory)Modules\SandBox\bin\Win64_Shipping_Client\SandBox.ViewModelCollection.dll</HintPath>
             <Private>false</Private>
         </Reference>
-    </ItemGroup>
-    <ItemGroup>
-        <None Update="SubModule.xml">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
     </ItemGroup>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <Exec Command="IF /I NOT &quot;$(CopyToGameModules)&quot;==&quot;Yes&quot; EXIT&#xD;&#xA;SET &quot;targetDir=$(GameDirectory)\Modules\zzzUniversalClose&quot;&#xD;&#xA;RMDIR /Q /S &quot;%25targetDir%25\bin&quot;&#xD;&#xA;MKDIR &quot;%25targetDir%25\bin\Win64_Shipping_Client&quot;&#xD;&#xA;MKDIR &quot;%25targetDir%25\Config&quot;&#xD;&#xA;XCOPY &quot;$(OutDir)*.dll&quot; &quot;%25targetDir%25\bin\Win64_Shipping_Client\&quot; /Y&#xD;&#xA;COPY SubModule.xml &quot;%25targetDir%25\SubModule.xml&quot; /Y&#xD;&#xA;COPY Config\universalclose-schema.json &quot;%25targetDir%25\Config\universalclose-schema.json&quot; /Y&#xD;&#xA;IF NOT EXIST &quot;%25targetDir%25\Config\universalclose.json&quot; COPY Config\universalclose.json &quot;%25targetDir%25\Config\universalclose.json&quot;" />

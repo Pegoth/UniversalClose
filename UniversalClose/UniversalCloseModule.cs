@@ -61,15 +61,21 @@ namespace UniversalClose
                     return;
 
                 // Check for which dialog to close (if any)
-                if (DialogHolders.PartyVM != null)
+                if (DialogHolders.EncyclopediaScreenManager != null && DialogHolders.EncyclopediaScreenManager.IsEncyclopediaOpen)
+                {
+                    DialogHolders.EncyclopediaScreenManager.CloseEncyclopedia();
+                }
+                else if (DialogHolders.PartyVM != null)
                 {
                     if (IsInquaryVisible)
                     {
                         InformationManager.HideInquiry();
-                        PartyScreenManager.ClosePartyPresentation(false, false);
+                        PartyScreenManager.ClosePartyPresentation(false);
                     }
                     else
+                    {
                         Traverse.Create(DialogHolders.PartyVM).Method("ExecuteDone").GetValue();
+                    }
                 }
                 else if (DialogHolders.SPInventoryVM != null)
                 {
@@ -111,10 +117,6 @@ namespace UniversalClose
                 else if (DialogHolders.KingdomManagementVM != null)
                 {
                     Traverse.Create(DialogHolders.KingdomManagementVM).Method("ExecuteClose").GetValue();
-                }
-                else if (DialogHolders.EncyclopediaScreenManager != null && DialogHolders.EncyclopediaScreenManager.IsEncyclopediaOpen)
-                {
-                    DialogHolders.EncyclopediaScreenManager.CloseEncyclopedia();
                 }
             }
             catch (Exception ex)
