@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
 using TaleWorlds.MountAndBlade;
 using UniversalClose.Config;
@@ -17,7 +18,8 @@ namespace UniversalClose
 {
     public class UniversalCloseModule : MBSubModuleBase
     {
-        public static ConfigModel Config { get; set; }
+        public static bool        IsInquaryVisible { get; set; }
+        public static ConfigModel Config           { get; set; }
 
         protected override void OnSubModuleLoad()
         {
@@ -47,7 +49,6 @@ namespace UniversalClose
             }));
 
             new Harmony("hu.pegoth.UniversalClose").PatchAll();
-            base.OnSubModuleLoad();
         }
 
         [SuppressMessage("ReSharper", "InvertIf")]
@@ -55,12 +56,20 @@ namespace UniversalClose
         {
             try
             {
-                if (Campaign.Current == null || !Input.IsKeyPressed(Config.OkayKey))
+                // Check if a campaign is loaded or not
+                if (Campaign.Current == null || !Config.OkayKey.IsReleased())
                     return;
 
+                // Check for which dialog to close (if any)
                 if (DialogHolders.PartyVM != null)
                 {
-                    Traverse.Create(DialogHolders.PartyVM).Method("ExecuteDone").GetValue();
+                    if (IsInquaryVisible)
+                    {
+                        InformationManager.HideInquiry();
+                        PartyScreenManager.ClosePartyPresentation(false, false);
+                    }
+                    else
+                        Traverse.Create(DialogHolders.PartyVM).Method("ExecuteDone").GetValue();
                 }
                 else if (DialogHolders.SPInventoryVM != null)
                 {
@@ -73,7 +82,15 @@ namespace UniversalClose
                 }
                 else if (DialogHolders.RecruitmentVM != null)
                 {
-                    Traverse.Create(DialogHolders.RecruitmentVM).Method("ExecuteDone").GetValue();
+                    if (IsInquaryVisible)
+                    {
+                        InformationManager.HideInquiry();
+                        Traverse.Create(DialogHolders.RecruitmentVM).Method("OnDone").GetValue();
+                    }
+                    else
+                    {
+                        Traverse.Create(DialogHolders.RecruitmentVM).Method("ExecuteDone").GetValue();
+                    }
                 }
                 else if (DialogHolders.CharacterDeveloperVM != null)
                 {
@@ -91,17 +108,14 @@ namespace UniversalClose
                 {
                     Traverse.Create(DialogHolders.TownManagementVM).Method("ExecuteDone").GetValue();
                 }
-                else if (DialogHolders.EncyclopediaScreenManager.IsEncyclopediaOpen)
+                else if (DialogHolders.KingdomManagementVM != null)
+                {
+                    Traverse.Create(DialogHolders.KingdomManagementVM).Method("ExecuteClose").GetValue();
+                }
+                else if (DialogHolders.EncyclopediaScreenManager != null && DialogHolders.EncyclopediaScreenManager.IsEncyclopediaOpen)
                 {
                     DialogHolders.EncyclopediaScreenManager.CloseEncyclopedia();
                 }
-                else
-                {
-                    // Do not clear keys if nothing relevant was open.
-                    return;
-                }
-
-                Input.ClearKeys();
             }
             catch (Exception ex)
             {

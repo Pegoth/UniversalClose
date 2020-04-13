@@ -19,5 +19,6 @@ namespace UniversalClose
         public static QuestsVM                  QuestsVM                  { get; set; }
         public static TownManagementVM          TownManagementVM          { get; set; }
         public static EncyclopediaScreenManager EncyclopediaScreenManager { get; set; }
+        public static KingdomManagementVM       KingdomManagementVM       { get; set; }
     }
 }
