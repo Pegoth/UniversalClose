@@ -27,6 +27,7 @@ namespace UniversalClose.Patches
                     finally
                     {
                         UniversalCloseModule.IsInquaryVisible = true;
+                        DebugLogger.Print("InquiryData.AffirmativeAction called");
                     }
                 },
                 () =>
@@ -38,6 +39,7 @@ namespace UniversalClose.Patches
                     finally
                     {
                         UniversalCloseModule.IsInquaryVisible = false;
+                        DebugLogger.Print("InquiryData.NegativeAction called");
                     }
                 },
                 data.SoundEventPath
@@ -47,6 +49,7 @@ namespace UniversalClose.Patches
         public static void Postfix()
         {
             UniversalCloseModule.IsInquaryVisible = true;
+            DebugLogger.Print("InformationManager.ShowInquiry called");
         }
     }
 
@@ -56,6 +59,7 @@ namespace UniversalClose.Patches
         public static void Postfix()
         {
             UniversalCloseModule.IsInquaryVisible = false;
+            DebugLogger.Print("InformationManager.HideInquiry called");
         }
     }
 
@@ -65,6 +69,7 @@ namespace UniversalClose.Patches
         public static void Postfix()
         {
             UniversalCloseModule.IsInquaryVisible = false;
+            DebugLogger.Print("InformationManager.ClearAllMessages called");
         }
     }
 }

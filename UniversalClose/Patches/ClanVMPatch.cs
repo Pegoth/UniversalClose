@@ -13,6 +13,7 @@ namespace UniversalClose.Patches
         public static void Postfix(ClanVM __instance)
         {
             DialogHolders.ClanVM = __instance;
+            DebugLogger.Print("ClanVM opened");
         }
     }
 
@@ -23,6 +24,7 @@ namespace UniversalClose.Patches
         {
             // OnFinalize is not called in ClanVM, manual cleanup required
             DialogHolders.ClanVM = null;
+            DebugLogger.Print("ClanVM closed");
         }
     }
 }

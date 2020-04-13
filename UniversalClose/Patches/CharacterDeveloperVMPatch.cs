@@ -12,6 +12,7 @@ namespace UniversalClose.Patches
         public static void Postfix(CharacterDeveloperVM __instance)
         {
             DialogHolders.CharacterDeveloperVM = __instance;
+            DebugLogger.Print("CharacterDeveloperVM opened");
         }
     }
 
@@ -22,6 +23,7 @@ namespace UniversalClose.Patches
         {
             // OnFinalize is not called in CharacterDeveloperVM, manual cleanup required
             DialogHolders.CharacterDeveloperVM = null;
+            DebugLogger.Print("CharacterDeveloperVM closed (ExecuteDone)");
         }
     }
 
@@ -32,6 +34,7 @@ namespace UniversalClose.Patches
         {
             // OnFinalize is not called in CharacterDeveloperVM, manual cleanup required
             DialogHolders.CharacterDeveloperVM = null;
+            DebugLogger.Print("CharacterDeveloperVM closed (ExecuteCancel)");
         }
     }
 }

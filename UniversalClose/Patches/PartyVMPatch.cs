@@ -13,6 +13,7 @@ namespace UniversalClose.Patches
         public static void Postfix(PartyVM __instance)
         {
             DialogHolders.PartyVM = __instance;
+            DebugLogger.Print("PartyVM opened");
         }
     }
 }

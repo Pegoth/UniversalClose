@@ -13,6 +13,7 @@ namespace UniversalClose.Patches
         {
             // No cleanup required as it is a manager
             DialogHolders.EncyclopediaScreenManager = __instance;
+            DebugLogger.Print("EncyclopediaScreenManager opened");
         }
     }
 }

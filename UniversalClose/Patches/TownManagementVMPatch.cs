@@ -12,6 +12,7 @@ namespace UniversalClose.Patches
         public static void Postfix(TownManagementVM __instance)
         {
             DialogHolders.TownManagementVM = __instance;
+            DebugLogger.Print("TownManagementVM opened");
         }
     }
 }

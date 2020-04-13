@@ -15,6 +15,7 @@ namespace UniversalClose.Patches
         public static void Postfix(WeaponDesignVM __instance)
         {
             DialogHolders.WeaponDesignVM = __instance;
+            DebugLogger.Print("WeaponDesignVM opened");
         }
     }
 }

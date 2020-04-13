@@ -12,6 +12,7 @@ namespace UniversalClose.Patches
         public static void Postfix(RecruitmentVM __instance)
         {
             DialogHolders.RecruitmentVM = __instance;
+            DebugLogger.Print("RecruitmentVM opened");
         }
     }
 }

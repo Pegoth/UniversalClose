@@ -8,6 +8,7 @@ using HarmonyLib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
+using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
@@ -64,6 +65,7 @@ namespace UniversalClose
                 if (DialogHolders.EncyclopediaScreenManager != null && DialogHolders.EncyclopediaScreenManager.IsEncyclopediaOpen)
                 {
                     DialogHolders.EncyclopediaScreenManager.CloseEncyclopedia();
+                    DebugLogger.Print("Closing encyclopedia");
                 }
                 else if (DialogHolders.PartyVM != null)
                 {
@@ -71,20 +73,24 @@ namespace UniversalClose
                     {
                         InformationManager.HideInquiry();
                         PartyScreenManager.ClosePartyPresentation(false);
+                        DebugLogger.Print("Closing PartyVM with inquiry open");
                     }
                     else
                     {
                         Traverse.Create(DialogHolders.PartyVM).Method("ExecuteDone").GetValue();
+                        DebugLogger.Print("Closing PartyVM (or opened inquiry)");
                     }
                 }
                 else if (DialogHolders.SPInventoryVM != null)
                 {
                     Traverse.Create(DialogHolders.SPInventoryVM).Method("ExecuteRemoveZeroCounts").GetValue();
                     Traverse.Create(DialogHolders.SPInventoryVM).Method("ExecuteCompleteTranstactions").GetValue();
+                    DebugLogger.Print("Closing SPInventoryVM");
                 }
                 else if (DialogHolders.WeaponDesignVM != null && DialogHolders.WeaponDesignVM.IsInFinalCraftingStage)
                 {
                     Traverse.Create(DialogHolders.WeaponDesignVM).Method("ExecuteFinalizeCrafting").GetValue();
+                    DebugLogger.Print("Closing WeaponDesignVM");
                 }
                 else if (DialogHolders.RecruitmentVM != null)
                 {
@@ -92,36 +98,43 @@ namespace UniversalClose
                     {
                         InformationManager.HideInquiry();
                         Traverse.Create(DialogHolders.RecruitmentVM).Method("OnDone").GetValue();
+                        DebugLogger.Print("Closing RecruitmentVM with inquiry open");
                     }
                     else
                     {
                         Traverse.Create(DialogHolders.RecruitmentVM).Method("ExecuteDone").GetValue();
+                        DebugLogger.Print("Closing RecruitmentVM (or opened inquiry)");
                     }
                 }
                 else if (DialogHolders.CharacterDeveloperVM != null)
                 {
                     Traverse.Create(DialogHolders.CharacterDeveloperVM).Method("ExecuteDone").GetValue();
+                    DebugLogger.Print("Closing CharacterDeveloperVM");
                 }
                 else if (DialogHolders.ClanVM != null)
                 {
                     Traverse.Create(DialogHolders.ClanVM).Method("ExecuteClose").GetValue();
-                }
-                else if (DialogHolders.QuestsVM != null)
-                {
-                    Traverse.Create(DialogHolders.QuestsVM).Method("ExecuteClose").GetValue();
+                    DebugLogger.Print("Closing ClanVM");
                 }
                 else if (DialogHolders.TownManagementVM != null)
                 {
                     Traverse.Create(DialogHolders.TownManagementVM).Method("ExecuteDone").GetValue();
+                    DebugLogger.Print("Closing TownManagementVM");
                 }
                 else if (DialogHolders.KingdomManagementVM != null)
                 {
                     Traverse.Create(DialogHolders.KingdomManagementVM).Method("ExecuteClose").GetValue();
+                    DebugLogger.Print("Closing KingdomManagementVM");
                 }
+                /*else if (DialogHolders.QuestsVM != null)
+                {
+                    Traverse.Create(DialogHolders.QuestsVM).Method("ExecuteClose").GetValue();
+                    DebugLogger.Print("Closing QuestVM");
+                }*/
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Error while running {0}: {1}", nameof(OnApplicationTick), ex);
+                DebugLogger.Print("Error in tick: {0}", ex);
             }
         }
     }

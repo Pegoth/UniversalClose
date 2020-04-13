@@ -13,6 +13,7 @@ namespace UniversalClose.Patches
         public static void Postfix(KingdomManagementVM __instance)
         {
             DialogHolders.KingdomManagementVM = __instance;
+            DebugLogger.Print("KingdomManagementVM opened");
         }
     }
 }

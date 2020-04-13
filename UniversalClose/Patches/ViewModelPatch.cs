@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using TaleWorlds.Library;
-using Debug = System.Diagnostics.Debug;
 
 namespace UniversalClose.Patches
 {
@@ -25,7 +24,7 @@ namespace UniversalClose.Patches
             if (!PropertyInfos.ContainsKey(__instance.GetType().Name))
                 return;
 
-            Debug.Print($"Auto cleanup: {__instance.GetType().Name}");
+            DebugLogger.Print("Closed {0} (Auto Cleanup)", __instance.GetType().Name);
 
             // If so clear it
             PropertyInfos[__instance.GetType().Name].SetValue(null, null);
@@ -38,7 +37,7 @@ namespace UniversalClose.Patches
     {
         public static void Postfix(ViewModel __instance, string commandName)
         {
-            Debug.Print($"ExecuteCommand: {__instance.GetType().Name}, {commandName}");
+            DebugLogger.Print("ExecuteCommand: {0}, {1}", __instance.GetType().Name, commandName);
         }
     }
 #endif

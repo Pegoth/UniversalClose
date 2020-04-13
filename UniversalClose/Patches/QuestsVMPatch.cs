@@ -9,9 +9,22 @@ namespace UniversalClose.Patches
     [HarmonyPatch(MethodType.Constructor)]
     internal class QuestsVMPostfix
     {
+        public static void Prefix(ref Action closeQuestsScreen)
+        {
+            var origCloseQuestScreen = closeQuestsScreen;
+
+            closeQuestsScreen = () =>
+            {
+                origCloseQuestScreen?.Invoke();
+                DialogHolders.QuestsVM = null;
+                DebugLogger.Print("QuestsVM closed (closeQuestsScreen)");
+            };
+        }
+
         public static void Postfix(QuestsVM __instance)
         {
             DialogHolders.QuestsVM = __instance;
+            DebugLogger.Print("QuestsVM opened");
         }
     }
 
@@ -22,6 +35,7 @@ namespace UniversalClose.Patches
         {
             // OnFinalize is not called in QuestsVM, manual cleanup required
             DialogHolders.QuestsVM = null;
+            DebugLogger.Print("QuestsVM closed (ExecuteClose)");
         }
     }
 }
