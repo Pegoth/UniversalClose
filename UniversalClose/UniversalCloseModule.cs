@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
@@ -8,7 +7,6 @@ using HarmonyLib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
-using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
@@ -57,7 +55,7 @@ namespace UniversalClose
         {
             try
             {
-                // Check if a campaign is loaded or not
+                // Check if it is required to run the logic
                 if (Campaign.Current == null || !Config.OkayKey.IsReleased())
                     return;
 
@@ -126,11 +124,11 @@ namespace UniversalClose
                     Traverse.Create(DialogHolders.KingdomManagementVM).Method("ExecuteClose").GetValue();
                     DebugLogger.Print("Closing KingdomManagementVM");
                 }
-                /*else if (DialogHolders.QuestsVM != null)
+                else if (DialogHolders.QuestsVM != null)
                 {
-                    Traverse.Create(DialogHolders.QuestsVM).Method("ExecuteClose").GetValue();
+                    //Traverse.Create(DialogHolders.QuestsVM).Method("ExecuteClose").GetValue();
                     DebugLogger.Print("Closing QuestVM");
-                }*/
+                }
             }
             catch (Exception ex)
             {

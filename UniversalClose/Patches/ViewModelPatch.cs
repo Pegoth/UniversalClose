@@ -24,10 +24,8 @@ namespace UniversalClose.Patches
             if (!PropertyInfos.ContainsKey(__instance.GetType().Name))
                 return;
 
-            DebugLogger.Print("Closed {0} (Auto Cleanup)", __instance.GetType().Name);
-
-            // If so clear it
             PropertyInfos[__instance.GetType().Name].SetValue(null, null);
+            DebugLogger.Print("Closed {0} (Auto Cleanup)", __instance.GetType().Name);
         }
     }
 
