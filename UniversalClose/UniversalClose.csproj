@@ -10,8 +10,6 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Lib.Harmony" Version="2.0.0.9" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-        <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.13" />
     </ItemGroup>
     <ItemGroup>
         <Reference Include="TaleWorlds.BattlEye.Client">
@@ -202,9 +200,13 @@
             <HintPath>$(GameDirectory)Modules\SandBox\bin\Win64_Shipping_Client\SandBox.ViewModelCollection.dll</HintPath>
             <Private>false</Private>
         </Reference>
+        <Reference Include="ModLib">
+            <HintPath>$(GameDirectory)Modules\ModLib\bin\Win64_Shipping_Client\ModLib.dll</HintPath>
+            <Private>false</Private>
+        </Reference>
     </ItemGroup>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(CopyToGameModules.ToLower())'=='yes'">
-        <Exec Command="SET &quot;targetDir=$(GameDirectory)\Modules\zzzUniversalClose&quot;&#xD;&#xA;RMDIR /Q /S &quot;%25targetDir%25\bin&quot;&#xD;&#xA;MKDIR &quot;%25targetDir%25\bin\Win64_Shipping_Client&quot;&#xD;&#xA;MKDIR &quot;%25targetDir%25\Config&quot;&#xD;&#xA;XCOPY &quot;$(OutDir)*.dll&quot; &quot;%25targetDir%25\bin\Win64_Shipping_Client\&quot; /Y&#xD;&#xA;COPY SubModule.xml &quot;%25targetDir%25\SubModule.xml&quot; /Y&#xD;&#xA;COPY Config\universalclose-schema.json &quot;%25targetDir%25\Config\universalclose-schema.json&quot; /Y&#xD;&#xA;IF NOT EXIST &quot;%25targetDir%25\Config\universalclose.json&quot; COPY Config\universalclose.json &quot;%25targetDir%25\Config\universalclose.json&quot;" />
+        <Exec Command="SET &quot;targetDir=$(GameDirectory)\Modules\zzzUniversalClose&quot;&#xD;&#xA;RMDIR /Q /S &quot;%25targetDir%25\bin&quot;&#xD;&#xA;MKDIR &quot;%25targetDir%25\bin\Win64_Shipping_Client&quot;&#xD;&#xA;XCOPY &quot;$(OutDir)*.dll&quot; &quot;%25targetDir%25\bin\Win64_Shipping_Client\&quot; /Y&#xD;&#xA;COPY SubModule.xml &quot;%25targetDir%25\SubModule.xml&quot; /Y" />
     </Target>
     <Target Name="PostBuild2" AfterTargets="PostBuildEvent" Condition="'$(GetLaunchModulesFromGame.ToLower())'=='yes'">
         <Exec Command="dotnet build --interactive -c Release -r win10-x86 -v m &quot;$(SolutionDir)UniversalClose.BuildTasks\UniversalClose.BuildTasks.csproj&quot;" />
