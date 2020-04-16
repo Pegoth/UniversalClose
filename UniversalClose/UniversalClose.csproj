@@ -6,6 +6,7 @@
         <AssemblyVersion>1.2.3</AssemblyVersion>
         <FileVersion>1.2.3</FileVersion>
         <Version>1.2.3</Version>
+        <Configurations>Debug;Release;BuildTasksDebug</Configurations>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Lib.Harmony" Version="2.0.0.9" />
@@ -202,8 +203,15 @@
             <Private>false</Private>
         </Reference>
     </ItemGroup>
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="IF /I NOT &quot;$(CopyToGameModules)&quot;==&quot;Yes&quot; EXIT&#xD;&#xA;SET &quot;targetDir=$(GameDirectory)\Modules\zzzUniversalClose&quot;&#xD;&#xA;RMDIR /Q /S &quot;%25targetDir%25\bin&quot;&#xD;&#xA;MKDIR &quot;%25targetDir%25\bin\Win64_Shipping_Client&quot;&#xD;&#xA;MKDIR &quot;%25targetDir%25\Config&quot;&#xD;&#xA;XCOPY &quot;$(OutDir)*.dll&quot; &quot;%25targetDir%25\bin\Win64_Shipping_Client\&quot; /Y&#xD;&#xA;COPY SubModule.xml &quot;%25targetDir%25\SubModule.xml&quot; /Y&#xD;&#xA;COPY Config\universalclose-schema.json &quot;%25targetDir%25\Config\universalclose-schema.json&quot; /Y&#xD;&#xA;IF NOT EXIST &quot;%25targetDir%25\Config\universalclose.json&quot; COPY Config\universalclose.json &quot;%25targetDir%25\Config\universalclose.json&quot;" />
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(CopyToGameModules.ToLower())'=='yes'">
+        <Exec Command="SET &quot;targetDir=$(GameDirectory)\Modules\zzzUniversalClose&quot;&#xD;&#xA;RMDIR /Q /S &quot;%25targetDir%25\bin&quot;&#xD;&#xA;MKDIR &quot;%25targetDir%25\bin\Win64_Shipping_Client&quot;&#xD;&#xA;MKDIR &quot;%25targetDir%25\Config&quot;&#xD;&#xA;XCOPY &quot;$(OutDir)*.dll&quot; &quot;%25targetDir%25\bin\Win64_Shipping_Client\&quot; /Y&#xD;&#xA;COPY SubModule.xml &quot;%25targetDir%25\SubModule.xml&quot; /Y&#xD;&#xA;COPY Config\universalclose-schema.json &quot;%25targetDir%25\Config\universalclose-schema.json&quot; /Y&#xD;&#xA;IF NOT EXIST &quot;%25targetDir%25\Config\universalclose.json&quot; COPY Config\universalclose.json &quot;%25targetDir%25\Config\universalclose.json&quot;" />
+    </Target>
+    <Target Name="PostBuild2" AfterTargets="PostBuildEvent" Condition="'$(GetLaunchModulesFromGame.ToLower())'=='yes'">
+        <Exec Command="dotnet build --interactive -c Release -r win10-x86 -v m &quot;$(SolutionDir)UniversalClose.BuildTasks\UniversalClose.BuildTasks.csproj&quot;" />
+    </Target>
+    <UsingTask TaskName="UniversalClose.BuildTasks.ProjectLauncherUpdaterTask" AssemblyFile="$(SolutionDir)UniversalClose.BuildTasks\bin\Release\net472\win10-x86\UniversalClose.BuildTasks.dll" Condition="'$(GetLaunchModulesFromGame.ToLower())'=='yes'" />
+    <Target Name="PostBuild3" AfterTargets="PostBuild2" Condition="'$(GetLaunchModulesFromGame.ToLower())'=='yes'">
+        <ProjectLauncherUpdaterTask LaunchSettingsPath="$(ProjectDir)Properties\launchSettings.json" />
     </Target>
     <ProjectExtensions>
         <VisualStudio>

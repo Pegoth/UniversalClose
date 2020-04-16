@@ -2,5 +2,6 @@
     <PropertyGroup>
         <GameDirectory><![CDATA[D:\Steam\SteamApps\common\Mount & Blade II Bannerlord\]]></GameDirectory>
         <CopyToGameModules>Yes</CopyToGameModules>
+        <GetLaunchModulesFromGame>Yes</GetLaunchModulesFromGame>
     </PropertyGroup>
 </Project>

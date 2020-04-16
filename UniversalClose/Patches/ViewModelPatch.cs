@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
@@ -6,37 +7,43 @@ using TaleWorlds.Library;
 
 namespace UniversalClose.Patches
 {
-    [HarmonyPatch(typeof(ViewModel), "OnFinalize")]
-    internal static class ViewModelPostfix
+    internal static class ViewModelPatches
     {
-        private static readonly Dictionary<string, PropertyInfo> PropertyInfos;
+        private static readonly Dictionary<Type, PropertyInfo> PropertyInfos;
 
-        static ViewModelPostfix()
+        static ViewModelPatches()
         {
             // Build property list from DialogHolders
             PropertyInfos = typeof(DialogHolders).GetProperties(BindingFlags.Public | BindingFlags.Static)
-                                                 .ToDictionary(info => info.PropertyType.Name, info => info);
+                                                 .ToDictionary(info => info.PropertyType, info => info);
         }
 
-        public static void Postfix(ViewModel __instance)
+        [HarmonyPatch(typeof(ViewModel))]
+        [HarmonyPatch(new Type[0])]
+        [HarmonyPatch(MethodType.Constructor)]
+        internal static class ConstructorPatch
         {
-            // Check if property exists in DialogHolders
-            if (!PropertyInfos.ContainsKey(__instance.GetType().Name))
-                return;
+            public static void Postfix(ViewModel __instance)
+            {
+                DebugLogger.Print("Created: {0}", __instance.GetType().Name);
 
-            PropertyInfos[__instance.GetType().Name].SetValue(null, null);
-            DebugLogger.Print("Closed {0} (Auto Cleanup)", __instance.GetType().Name);
+                // Check if property exists in DialogHolders
+                if (!PropertyInfos.ContainsKey(__instance.GetType()))
+                    return;
+
+                PropertyInfos[__instance.GetType()].SetValue(null, __instance);
+            }
         }
-    }
 
 #if DEBUG
-    [HarmonyPatch(typeof(ViewModel), "ExecuteCommand")]
-    internal static class ViewModelExecuteCommandPostfix
-    {
-        public static void Postfix(ViewModel __instance, string commandName)
+        [HarmonyPatch(typeof(ViewModel), "ExecuteCommand")]
+        internal static class ExecuteCommandPatch
         {
-            DebugLogger.Print("ExecuteCommand: {0}, {1}", __instance.GetType().Name, commandName);
+            public static void Postfix(ViewModel __instance, string commandName)
+            {
+                DebugLogger.Print("Called: ExecuteCommand, {0}, {1}", __instance.GetType().Name, commandName);
+            }
         }
-    }
 #endif
+    }
 }
