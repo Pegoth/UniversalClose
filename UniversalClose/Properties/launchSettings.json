@@ -3,7 +3,7 @@
     "UniversalClose": {
       "commandName": "Executable",
       "executablePath": "D:\\Steam\\SteamApps\\common\\Mount & Blade II Bannerlord\\bin\\Win64_Shipping_Client\\Bannerlord.exe",
-      "commandLineArgs": "/singleplayer _MODULES_*Native*SandBoxCore*CustomBattle*SandBox*StoryMode*zzzUniversalClose*_MODULES_",
+      "commandLineArgs": "/singleplayer _MODULES_*Native*SandBoxCore*CustomBattle*Sandbox*StoryMode*zzzUniversalClose*_MODULES_",
       "workingDirectory": "D:\\Steam\\SteamApps\\common\\Mount & Blade II Bannerlord\\bin\\Win64_Shipping_Client"
     }
   }
